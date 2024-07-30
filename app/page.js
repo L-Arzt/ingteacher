@@ -1,7 +1,9 @@
 'use client'
 
 import Image from "next/image";
+import InputMask from 'react-input-mask';
 
+import bgMain from '../public/bgMainPage.png'
 import logoImg from '../public/Logo.png'
 import img1 from '../public/headerblockimg1.png'
 import img2 from '../public/headerblockimg2.png'
@@ -10,13 +12,18 @@ import aboutmeimgmain from '../public/aboutmeimgmain.png'
 import aboutmecardimg1 from '../public/aboutmecardimg1.png'
 import mainImg from '../public/reviewsMainimg.png'
 import CardImg1 from '../public/reviewsCardimg1.png'
+import saleLeft from '../public/saleblockleftimg.png'
+import saleRight from '../public/saleblockrightimg.png'
+import saleBook from '../public/saleblockbook.png'
+import bgFooter from '../public/bgFooter.png'
 
 
-import ImageWithBorder from './components/imagewithborder'
-import AboutMeCard from './components/aboutmeblockcard'
-import ReviewsCard from './components/reviewscard'
+import ImageWithBorder from './elemPage/imagewithborder'
+import AboutMeCard from './elemPage/aboutmeblockcard'
+import ReviewsCard from './elemPage/reviewscard'
+import PriceCard from './elemPage/priceblockcard'
 
-import { Card, CardContent } from "@/components/ui/card"
+
 import {
   Carousel,
   CarouselContent,
@@ -28,12 +35,12 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
 
-
 export default function Home() {
 
   const [api, setApi] = useState()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+
 
   useEffect(() => {
     if (!api) {
@@ -49,7 +56,8 @@ export default function Home() {
   }, [api])
 
   return (
-    <body>
+    <body className="relative">
+      <Image className="absolute w-full -top-5 -z-30" src={bgMain}></Image>
       <header>
         <section className="flex items-center justify-around border border-[#FF9100] rounded-3xl  m-5 p-3 flex-wrap">
           <figure>
@@ -235,8 +243,107 @@ export default function Home() {
             </div>
           </article>
         </section>
-      </main>
 
+        <section className="mt-20">
+          <header className="flex items-center justify-center flex-col">
+            <figure>
+              <Image
+                src={aboutmeimgmain}
+                alt="Logo image"
+              />
+            </figure>
+            <h1 className="text-[#A56714] text-[39px]">Цены на занятия</h1>
+          </header>
+
+          <article className="flex items-center justify-center gap-[50px] m-20">
+            <PriceCard
+              src={aboutmecardimg1}
+              alt="Card image"
+              width={90}
+              height={120}
+              cardtextmain='Индивидуальное занятие'
+              cardtextdesc='Длительность 60 минут'
+              cardtextdesc2='Группа 1 человек'
+              cardtextprice='700'
+            />
+            <PriceCard
+              src={aboutmecardimg1}
+              alt="Card image"
+              width={90}
+              height={120}
+              cardtextmain='Групповое занятие'
+              cardtextdesc1='Длительность 60 минут Группа 3-4 человека'
+              cardtextdesc2='Группа 3-4 человека'
+              cardtextprice='400'
+            />
+            <PriceCard
+              src={aboutmecardimg1}
+              alt="Card image"
+              width={90}
+              height={120}
+              cardtextmain='Абонемент на 5 занятий'
+              cardtextdesc1='Длительность суммарно 300 минут'
+              cardtextdesc2='Группа 1 человека/группа 1 человек'
+              cardtextprice='3000/1700'
+            />
+
+
+          </article>
+        </section>
+        <section className="relative flex items-center justify-center m-20">
+          <figure className="">
+            <div className=" absolute left-0 top-0">
+              <Image
+                src={saleLeft}
+                alt="Decoration left sale block image">
+              </Image>
+            </div>
+            <div className="absolute right-0 bottom-0">
+              <Image
+                src={saleRight}
+                alt="Decoration right sale block image">
+              </Image>
+            </div>
+          </figure>
+
+          <article className="flex items-center justify-center flex-col gap-3">
+            <figure className="my-20">
+              <Image
+                src={saleBook}
+                alt="Image sale block main">
+              </Image>
+            </figure>
+            <h1 className="text-[24px] text-[#A56714] font-semibold">Записывайтесь на пробное занятие со скидкой!</h1>
+            <p className="text-[16px] text-[#A56714]">При записи на сайте дейстует скидка 20% на пробное занятие.</p>
+
+            <div className="my-10 border rounded-3xl border-[#A56714]">
+              <InputMask mask="+7(999)-999-99-99" className="p-3  rounded-3xl text-[#AE8349] outline-none placeholder:text-[#AE8349]" placeholder="Ваш номер телефона"></InputMask>
+              <button className="bg-[#FF9100] text-white p-3 border border-[#A56714] rounded-3xl">Отправить</button>
+            </div>
+          </article>
+        </section>
+      </main>
+      <footer>
+        <section className="relative h-full max-h-[200px]">
+          <Image
+            className="absolute w-full -z-10 "
+            src={bgFooter}
+
+            alt="Decoration right sale block image">
+          </Image>
+
+          <article className="absolute flex items-start justify-end flex-col left-48 -bottom-40">
+            <Image
+              src={logoImg}
+              alt="Decoration right sale block image">
+            </Image>
+            <p>Частный онлайн репетитор по Английскому языку
+            </p>
+            <p>Гринь Ульяна</p>
+            <p>© Copyright 2024 Online </p>
+          </article>
+        </section>
+      </footer>
     </body>
   );
 }

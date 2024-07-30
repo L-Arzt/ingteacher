@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  role     String @default("user")
+}
+
+model timetable {
+  id           Int      @id @default(autoincrement())
+  numberLesson Int
+  date         DateTime
+  weekDay      Int
+  classroom    String
+  discipline   String
+  group        String
+  teacher      String
+
+  booked Boolean @default(false)
+}

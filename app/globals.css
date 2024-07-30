@@ -59,6 +59,32 @@
   }
 }
 
+
+
+.calendar_custom .h-9.w-9 button{
+  border-radius: 0;
+}
+
+.calendar_custom td.h-9.w-9:first-child button{
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.calendar_custom td.h-9.w-9:last-child button{
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+.customKletka td:first-child{
+position: sticky;
+left: 0;
+background: white;
+z-index: 1;
+
+}
+
+
+
 @layer base {
   * {
     @apply border-border;
