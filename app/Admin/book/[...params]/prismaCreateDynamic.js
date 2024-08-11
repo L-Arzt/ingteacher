@@ -1,19 +1,31 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import Book from './page';
-import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { NextAuthOptions } from '@/config';
 
 const prisma = new PrismaClient();
 
 export async function createLesson(prevState, formData) {
   const data = Object.fromEntries(formData);
 
+  // Получаем сессию
+  const session = await getServerSession(NextAuthOptions);
+
+  if (!session) {
+    return {
+      message: 'Необходимо войти в систему',
+    };
+  }
+
+  const userId = session.user.id;
+
   const lesson = await prisma.timetable.findFirst({
     where: {
       date: new Date(data.date),
       numberLesson: Number(data.lessonNum),
-      classroom: decodeURIComponent(data.audt),
+      // weekDay: Number(data.weekDay),
     },
   });
 
@@ -29,16 +41,16 @@ export async function createLesson(prevState, formData) {
     data: {
       numberLesson: Number(data.lessonNum),
       weekDay: Number(data.lessonDay),
-      classroom: decodeURIComponent(data.audt),
-      teacher: data.teacher,
-      discipline: data.discipline,
-      group: data.group,
+      studentName: data.studentName,
+      description: data.description,
       date: new Date(data.date),
+      typeLearning: data.typeLearning,
       booked: true,
+      userId: userId, // Добавляем userId
     },
   });
   if (createLesson) {
-    revalidatePath('/User/TimeTable');
+    redirect('/User/TimeTable');
     return {
       message: 'Готово',
     };

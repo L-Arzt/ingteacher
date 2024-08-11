@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import TimeTable from './TimeTable';
-import { ClassRooms } from '../../../lib/general';
+
 export default async function TimeTablePage() {
   const prisma = new PrismaClient({});
 
@@ -25,30 +25,19 @@ export default async function TimeTablePage() {
     monday: getMonday(new Date()),
     sunday: getSunday(new Date()),
   };
-  async function getData() {
-    let data = [];
-    for (let room of ClassRooms) {
-      const resp = await prisma.timetable.findMany({
-        where: {
-          AND: [
-            { classroom: room },
-            {
-              date: {
-                gte: weekRange.monday,
-                lte: weekRange.sunday,
-              },
-            },
-          ],
-        },
-      });
 
-      data.push({
-        class: room,
-        rasp: resp,
-      });
-    }
+  async function getData() {
+    const data = await prisma.timetable.findMany({
+      where: {
+        date: {
+          gte: weekRange.monday,
+          lte: weekRange.sunday,
+        },
+      },
+    });
     return data;
   }
+
   const data = await getData();
   return <TimeTable data={data} weekRange={weekRange} />;
 }

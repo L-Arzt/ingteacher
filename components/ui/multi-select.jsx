@@ -8,7 +8,7 @@ import {
     WandSparkles,
 } from "lucide-react";
 
-import { cn } from "../../../lib/utils";
+import { cn } from "../../lib/utils";
 import { Separator } from "./separator";
 import { Button } from "./button";
 import { Badge } from "./badge";
@@ -25,7 +25,7 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-} from "../ui/command";
+} from "./command";
 
 const multiSelectVariants = cva(
     "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",

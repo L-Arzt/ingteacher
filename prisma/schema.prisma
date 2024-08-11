@@ -14,6 +14,7 @@ model users {
   id       Int    @id @default(autoincrement())
   email    String @unique
   password String
+  userName String 
   role     String @default("user")
 }
 
@@ -22,10 +23,10 @@ model timetable {
   numberLesson Int
   date         DateTime
   weekDay      Int
-  classroom    String
-  discipline   String
-  group        String
-  teacher      String
-
-  booked Boolean @default(false)
+  studentName  String
+  description  String
+  typeLearning String
+  booked       Boolean  @default(false)
+  userId       Int    
 }
+

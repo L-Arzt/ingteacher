@@ -1,5 +1,5 @@
+'use client';
 
-'use client'
 import { useContext, useEffect, useRef, useState } from 'react';
 import {
     Table,
@@ -13,34 +13,19 @@ import Link from 'next/link';
 import { ThemeContext } from '../../components/ThemeProvider';
 import edit from '../../../public/edit.png';
 import Image from 'next/image';
-import { getSession } from 'next-auth/react';
 
-export default function TimeTable({ data, weekRange }) {
+export default function TimeTableAdmin({ data, weekRange }) {
     const [dataset, setDataset] = useState(data);
     const [hover, setHover] = useState({});
     const context = useContext(ThemeContext);
-    const [currentUser, setCurrentUser] = useState(null);
 
     const slideContainerRef = useRef(null);
 
     useEffect(() => {
-        async function fetchCurrentUser() {
-            const session = await getSession();
-            if (session) {
-                setCurrentUser(session.user);
-            } else {
-                console.error('Failed to fetch current user');
-            }
-        }
-
-        fetchCurrentUser();
-    }, []);
-
-    useEffect(() => {
-        if (context.weeks && currentUser) {
+        if (context.weeks) {
             async function getData() {
-                const resp = await fetch('/api/getTimeTable', {
-                    method: 'POST',
+                const resp = await fetch('/api/getTimeTableAdmin', {
+                    method: 'post',
                     body: JSON.stringify({
                         monday: context.weeks.from,
                         sunday: context.weeks.to,
@@ -52,7 +37,6 @@ export default function TimeTable({ data, weekRange }) {
 
                 if (resp.ok) {
                     const data = await resp.json();
-                    console.log('Fetched data:', data);
                     setDataset(data.data);
                 } else {
                     console.error('Failed to fetch data');
@@ -61,7 +45,7 @@ export default function TimeTable({ data, weekRange }) {
 
             getData();
         }
-    }, [context.weeks, currentUser]);
+    }, [context.weeks]);
 
     function getDateFromDay(date, day) {
         var result = new Date(date);
@@ -101,46 +85,36 @@ export default function TimeTable({ data, weekRange }) {
                             (lesson) => lesson.weekDay === dayIndex + 1 && lesson.numberLesson === i
                         );
                         if (lesson) {
-                            if (currentUser && lesson.userId === currentUser.id) {
-                                return (
-                                    <TableCell className="relative border transform transition-transform duration-200"
-                                        key={`lesson-${lesson.id}`}
-                                        onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
-                                        onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
-                                    >
-                                        <div className={`relative w-[140px] h-[70px] flex flex-col items-center justify-center transition-all duration-200`}>
-                                            {hover[lesson.id] ? (
-                                                <div className='absolute flex items-center justify-center  w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg gap-2'>
-                                                    <div className='flex-col'>
-                                                        <p className="font-bold">{lesson.studentName}</p>
-                                                        <p>{lesson.description}</p>
-                                                    </div>
-                                                    <div>
-                                                        <Link href={`/admin/book/UpdatePage/${lesson.id}`}>
-                                                            <button className="flex items-center justify-center bg-[#921CB0] w-[35px] h-[35px] rounded-md text-stone-50">
-                                                                <Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={edit} alt='editImg' />
-                                                            </button>
-                                                        </Link>
-                                                    </div>
+                            return (
+                                <TableCell className="relative border transform transition-transform duration-200"
+                                    key={`lesson-${lesson.id}`}
+                                    onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
+                                    onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
+                                >
+                                    <div className={`relative w-[140px] h-[70px] flex flex-col items-center justify-center transition-all duration-200`}>
+                                        {hover[lesson.id] ? (
+                                            <div className='absolute flex items-center justify-center  w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg gap-2'>
+                                                <div className='flex-col'>
+                                                    <p className="font-bold">{lesson.studentName}</p>
+                                                    <p>{lesson.description}</p>
                                                 </div>
-                                            ) : (
-                                                <div className='absolute'>
-                                                    <p className="z-0">{lesson.studentName.slice(0, 10)}...</p>
-                                                    <p className="z-0">{lesson.description.slice(0, 10)}...</p>
+                                                <div>
+                                                    <Link href={`/admin/book/UpdatePage/${lesson.id}`}>
+                                                        <button className="flex items-center justify-center bg-[#921CB0] w-[35px] h-[35px] rounded-md text-stone-50">
+                                                            <Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={edit} alt='editImg' />
+                                                        </button>
+                                                    </Link>
                                                 </div>
-                                            )}
-                                        </div>
-                                    </TableCell>
-                                );
-                            } else {
-                                return (
-                                    <TableCell className="border" key={`occupied-${i}-${dayIndex}`}>
-                                        <div className='flex w-[140px] h-[70px] items-center justify-center flex-col gap-2'>
-                                            <h1 className='text-[#7E7E7E]'>Занято</h1>
-                                        </div>
-                                    </TableCell>
-                                );
-                            }
+                                            </div>
+                                        ) : (
+                                            <div className='absolute'>
+                                                <p className="z-0">{lesson.studentName.slice(0, 10)}...</p>
+                                                <p className="z-0">{lesson.description.slice(0, 10)}...</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </TableCell>
+                            );
                         } else {
                             return (
                                 <TableCell className="border" key={`empty-${i}-${dayIndex}`}>
@@ -154,12 +128,13 @@ export default function TimeTable({ data, weekRange }) {
                                         >
                                             <button className="flex items-center justify-center bg-[#921CB0] h-[30px] rounded-md text-stone-50 p-5">Занять аудиторию</button>
                                         </Link>
+
+
                                     </div>
                                 </TableCell>
                             );
                         }
-                    }
-                    )}
+                    })}
                 </TableRow>
             );
             table.push(tablePart);

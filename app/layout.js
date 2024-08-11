@@ -2,6 +2,9 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ThemeProvider from './components/ThemeProvider';
 import { getServerSession } from 'next-auth';
+import HeaderElem from './elemPage/Header';
+import FooterElem from './elemPage/Footer';
+import React from 'react';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -12,11 +15,19 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const session = await getServerSession();
   return (
-    <html lang="en">
+    <html lang="ru">
       <body>
-        <section className="flex items-center min-h-[100vh]">
-          <ThemeProvider session={session}>{children}</ThemeProvider>
-        </section>
+        <header>
+          <HeaderElem />
+        </header>
+        <main>
+          <ThemeProvider session={session}>
+            {React.cloneElement(children, { session })}
+          </ThemeProvider>
+        </main>
+        <footer>
+          <FooterElem />
+        </footer>
       </body>
     </html>
   );

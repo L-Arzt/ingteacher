@@ -24,7 +24,7 @@ export async function updateLesson(prevState, formData) {
     },
   });
   if (createLesson) {
-    revalidatePath('/user/TimeTable');
+    revalidatePath('/User/TimeTable');
     return {
       message: 'Готово',
     };

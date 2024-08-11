@@ -1,37 +1,26 @@
 'use client';
 import React, { useState } from 'react';
-import { MultiSelect } from '../../../components/ui/multi-select';
+import { MultiSelect } from '@/components/ui/multi-select';
 import { Cat, Dog, Fish, Rabbit, Turtle } from 'lucide-react';
 import { createLesson } from './prismaCreateDynamic';
 
 import { useFormState } from 'react-dom';
 export default function Book({ params }) {
-  const [teacher, setTeacher] = useState('');
-  const [discipline, setDiscipline] = useState('');
-  const [group, setGropup] = useState('');
+  const [studentName, setStudentName] = useState('');
+  const [description, setDescription] = useState('');
+  // const [group, setGropup] = useState('');
 
   const frameworksList = [
     {
-      value: 'ИСП9-kh31',
-      label: 'ИСП9-kh31',
+      value: 'Индивидуальное',
+      label: 'Индивидуальное',
       // icon: Turtle,
     },
     {
-      value: 'ИСП9-kh32',
-      label: 'ИСП9-kh32',
+      value: 'Групповое',
+      label: 'Групповое',
     },
-    {
-      value: 'vue',
-      label: 'Vue',
-    },
-    {
-      value: 'svelte',
-      label: 'Svelte',
-    },
-    {
-      value: 'ember',
-      label: 'Ember',
-    },
+
   ];
 
   // [0] - номер пары
@@ -52,7 +41,7 @@ export default function Book({ params }) {
     <div className="flex mx-auto items-center justify-center flex-col w-[100%] h-[40%] gap-[50px]">
       <div className="flex mx-auto items-center justify-center flex-col w-[40%] h-[70px] bg-[#F7F7F8] rounded-[15px]">
         <h1 className="text-[17px] font-semibold">
-          Заполните форму, чтобы занять аудиторию
+          Заполните форму, чтобы забронировать занятие
         </h1>
       </div>
 
@@ -62,29 +51,31 @@ export default function Book({ params }) {
           className="flex items-center justify-center flex-col w-[100%] h-[100%] gap-y-[20px]"
         >
           <div className="flex  items-center justify-center w-[90%] h-[50px] rounded-[10px] p-3 my-10 bg-[#ffffff] gap-2 text-[#921CB0] ">
-            <div>Кабинет: {decodeURIComponent(params.params[2])}</div>|
-            <div>Дата: {params.params[3]}</div>|
-            <div>Пара: {params.params[0]} </div>
+            {/* <div>Кабинет: {decodeURIComponent(params.params[2])}</div>| */}
+            <div>Дата: {params.params[2]}</div>|
+            <div>№ дня недели: {params.params[1]}</div>|
+            <div>№ занятия: {params.params[0]} </div>
           </div>
 
           <label className="w-[90%]">
             <input
               className="w-[100%] h-[50px] rounded-[10px] pl-3"
               type="text"
-              defaultValue={teacher}
-              name="teacher"
-              placeholder="ФИО "
+              defaultValue={studentName}
+              name="studentName"
+              placeholder="ФИО"
             />
           </label>
           <label className="w-[90%]">
             <input
               className="w-[100%] h-[50px] rounded-[10px] pl-3"
               type="text"
-              defaultValue={discipline}
-              name="discipline"
+              defaultValue={description}
+              name="description"
               placeholder="Описание бронирования"
             />
           </label>
+
 
           <label className="w-[90%]">
             <div className="">
@@ -92,7 +83,7 @@ export default function Book({ params }) {
                 options={frameworksList}
                 onValueChange={setSelectedFrameworks}
                 // defaultValue={selectedFrameworks} // optional
-                placeholder="Выберите группу (необязательно)" // optional
+                placeholder="Выберите тип занятия " // optional
                 animation={2} // optional
                 variant="inverted" // optional
                 className="w-[100%]  rounded-[10px] pl-3  bg-white text-[#b1b1b1]"
@@ -104,21 +95,21 @@ export default function Book({ params }) {
 
           <input hidden type="text" value={params.params[1]} name="lessonDay" />
 
-          <input hidden type="text" value={params.params[2]} name="audt" />
+          {/* <input hidden type="text" value={params.params[2]} name="audt" /> */}
 
-          <input hidden type="text" value={params.params[3]} name="date" />
+          <input hidden type="text" value={params.params[2]} name="date" />
 
           <input
             hidden
             type="text"
             value={selectedFrameworks.join(', ')}
-            name="group"
+            name="typeLearning"
           />
 
           <input
             className="flex w-[90%] h-[45px] items-center justify-center bg-[#921CB0]  rounded-md text-stone-50"
             type="submit"
-            value="Занять аудиторию"
+            value="Забронировать"
           ></input>
 
           <div aria-live="polite">{state?.message}</div>
