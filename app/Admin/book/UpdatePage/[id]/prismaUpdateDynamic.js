@@ -1,7 +1,7 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
@@ -15,19 +15,20 @@ export async function updateLesson(prevState, formData) {
     data: {
       numberLesson: Number(data.lessonNum),
       weekDay: Number(data.lessonDay),
-      classroom: decodeURIComponent(data.audt),
-      teacher: data.teacher,
-      discipline: data.discipline,
-      group: data.group,
+      studentName: data.studentName,
+      description: data.description,
       date: new Date(data.date),
+      typeLearning: data.typeLearning,
       booked: true,
+      userId: data.userId,
     },
   });
   if (createLesson) {
-    revalidatePath('/User/TimeTable');
+    redirect('/Admin/TimeTableAdmin');
     return {
       message: 'Готово',
     };
+
   }
   return {
     message: 'Ошибка',

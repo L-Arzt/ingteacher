@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { MultiSelect } from '@/components/ui/multi-select';
-import { Cat, Dog, Fish, Rabbit, Turtle } from 'lucide-react';
+
 import { createLesson } from './prismaCreateDynamic';
 
 import { useFormState } from 'react-dom';
@@ -10,7 +10,7 @@ export default function Book({ params }) {
   const [description, setDescription] = useState('');
   // const [group, setGropup] = useState('');
 
-  const frameworksList = [
+  const TypeLearningList = [
     {
       value: 'Индивидуальное',
       label: 'Индивидуальное',
@@ -31,14 +31,15 @@ export default function Book({ params }) {
     message: '',
   };
 
-  const [selectedFrameworks, setSelectedFrameworks] = useState([]);
-
-  console.log(selectedFrameworks);
+  const [selectedLearning, setSelectedLearning] = useState([]);
 
   const [state, formAction] = useFormState(createLesson, initialState);
 
+  const TimeOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+  const formattedDate = new Date(params.params[2]).toLocaleDateString('ru-RU', TimeOptions);
+
   return (
-    <div className="flex mx-auto items-center justify-center flex-col w-[100%] h-[40%] gap-[50px]">
+    <div className="flex mx-auto my-6 items-center justify-center flex-col w-[100%] h-[40%] gap-[30px]">
       <div className="flex mx-auto items-center justify-center flex-col w-[40%] h-[70px] bg-[#F7F7F8] rounded-[15px]">
         <h1 className="text-[17px] font-semibold">
           Заполните форму, чтобы забронировать занятие
@@ -50,9 +51,9 @@ export default function Book({ params }) {
           action={formAction}
           className="flex items-center justify-center flex-col w-[100%] h-[100%] gap-y-[20px]"
         >
-          <div className="flex  items-center justify-center w-[90%] h-[50px] rounded-[10px] p-3 my-10 bg-[#ffffff] gap-2 text-[#921CB0] ">
+          <div className="flex  items-center justify-center w-[90%] h-[50px] rounded-[10px] p-3 my-10 bg-[#ffffff] gap-2 text-[#FF9100]">
             {/* <div>Кабинет: {decodeURIComponent(params.params[2])}</div>| */}
-            <div>Дата: {params.params[2]}</div>|
+            <div>Дата: {formattedDate}</div>|
             <div>№ дня недели: {params.params[1]}</div>|
             <div>№ занятия: {params.params[0]} </div>
           </div>
@@ -80,8 +81,8 @@ export default function Book({ params }) {
           <label className="w-[90%]">
             <div className="">
               <MultiSelect
-                options={frameworksList}
-                onValueChange={setSelectedFrameworks}
+                options={TypeLearningList}
+                onValueChange={setSelectedLearning}
                 // defaultValue={selectedFrameworks} // optional
                 placeholder="Выберите тип занятия " // optional
                 animation={2} // optional
@@ -92,22 +93,18 @@ export default function Book({ params }) {
           </label>
 
           <input hidden type="text" value={params.params[0]} name="lessonNum" />
-
           <input hidden type="text" value={params.params[1]} name="lessonDay" />
-
-          {/* <input hidden type="text" value={params.params[2]} name="audt" /> */}
-
           <input hidden type="text" value={params.params[2]} name="date" />
 
           <input
             hidden
             type="text"
-            value={selectedFrameworks.join(', ')}
+            value={selectedLearning.join(', ')}
             name="typeLearning"
           />
 
           <input
-            className="flex w-[90%] h-[45px] items-center justify-center bg-[#921CB0]  rounded-md text-stone-50"
+            className="flex w-[90%] h-[45px] items-center justify-center bg-[#FF9100]  rounded-md text-stone-50"
             type="submit"
             value="Забронировать"
           ></input>

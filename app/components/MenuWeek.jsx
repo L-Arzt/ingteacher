@@ -25,7 +25,7 @@ export default function MenuWeek() {
     }, []);
 
     return (
-        <section className="flex justify-center items-center flex-col pt-[100px] m-2 z-10">
+        <section className="flex justify-center items-center flex-col z-10">
             <div className="flex justify-center items-center">
                 <button
                     className=""
@@ -34,9 +34,9 @@ export default function MenuWeek() {
                     {menuVisible ? (
                         <></>
                     ) : (
-                        <div className="flex items-center justify-center bg-[#921CB0] min-w-10 h-[30px] rounded-md text-stone-50 p-5">
+                        <div className="flex items-center justify-center bg-[#ff910075] min-w-10 h-[30px] rounded-md text-stone-50 p-5 hover:bg-[#FF9100]">
                             <h3>Сменить неделю</h3>
-                            <Image className="w-6 h-6 m-4" src={burderMenu} alt="glaz" />
+                            {/* <Image className="w-6 h-6 m-4" src={burderMenu} alt="glaz" /> */}
                         </div>
                     )}
                 </button>
@@ -84,13 +84,13 @@ export default function MenuWeek() {
                 </div>
             )}
 
-            <div>
+            {/* <div>
                 {selectedWeek && (
                     <p>
                         Выбранная неделя {selectedWeek.from.toLocaleDateString()} - {selectedWeek.to.toLocaleDateString()}
                     </p>
                 )}
-            </div>
+            </div> */}
         </section>
     );
 }

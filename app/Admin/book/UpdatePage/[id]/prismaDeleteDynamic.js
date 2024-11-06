@@ -13,7 +13,7 @@ export async function deleteLesson(params) {
     },
   });
   if (deleteLesson) {
-    redirect('/User/TimeTable');
+    redirect('/Admin/TimeTableAdmin');
   }
   return {
     message: 'Ошибка',

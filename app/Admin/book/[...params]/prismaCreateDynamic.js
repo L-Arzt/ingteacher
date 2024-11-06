@@ -46,11 +46,11 @@ export async function createLesson(prevState, formData) {
       date: new Date(data.date),
       typeLearning: data.typeLearning,
       booked: true,
-      userId: userId, // Добавляем userId
+      userId: userId,
     },
   });
   if (createLesson) {
-    redirect('/User/TimeTable');
+    redirect('/Admin/TimeTableAdmin');
     return {
       message: 'Готово',
     };

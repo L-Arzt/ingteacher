@@ -18,6 +18,12 @@ model users {
   role     String @default("user")
 }
 
+model salesuser {
+  id    Int    @id @default(autoincrement())
+  phone String
+  name  String
+}
+
 model timetable {
   id           Int      @id @default(autoincrement())
   numberLesson Int

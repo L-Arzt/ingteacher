@@ -41,6 +41,48 @@ export default function Home() {
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
 
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [showNameInput, setShowNameInput] = useState(false);
+  const [userName, setUserName] = useState("");
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhoneNumber(value);
+
+    if (value.replace(/[^0-9]/g, "").length === 11) {
+      setShowNameInput(true);
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/api/addSalesUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phone: phoneNumber,
+          name: userName,
+        }),
+      });
+
+      if (response.ok) {
+        const newUser = await response.json();
+        console.log('Новый пользователь добавлен:', newUser);
+
+        // Очистка полей после отправки
+        setPhoneNumber("");
+        setUserName("");
+        setShowNameInput(false);
+      } else {
+        console.error('Ошибка при добавлении пользователя');
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
+  };
 
   useEffect(() => {
     if (!api) {
@@ -54,6 +96,8 @@ export default function Home() {
       setCurrent(api.selectedScrollSnap() + 1)
     })
   }, [api])
+
+
 
   return (
     <section className="relative">
@@ -151,7 +195,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section>
+      <section id="reviewsBlock">
         <article className="flex items-center justify-center flex-col">
           <header className="flex items-center justify-center flex-col my-5">
             <figure>
@@ -223,7 +267,7 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="mt-20">
+      <section id="pricesBlock" className="mt-20">
         <header className="flex items-center justify-center flex-col">
           <figure>
             <Image
@@ -269,15 +313,15 @@ export default function Home() {
 
         </article>
       </section>
-      <section className="relative flex items-center justify-center m-20">
+      <section className="relative flex items-center justify-center m-20 ">
         <figure className="">
-          <div className=" absolute left-0 top-0">
+          <div className=" absolute left-0 top-0 -z-50">
             <Image
               src={saleLeft}
               alt="Decoration left sale block image">
             </Image>
           </div>
-          <div className="absolute right-0 bottom-0">
+          <div className="absolute right-0 bottom-0 -z-50">
             <Image
               src={saleRight}
               alt="Decoration right sale block image">
@@ -289,15 +333,31 @@ export default function Home() {
           <figure className="my-20">
             <Image
               src={saleBook}
-              alt="Image sale block main">
-            </Image>
+              alt="Image sale block main"
+            />
           </figure>
           <h1 className="text-[24px] text-[#A56714] font-semibold">Записывайтесь на пробное занятие со скидкой!</h1>
-          <p className="text-[16px] text-[#A56714]">При записи на сайте дейстует скидка 20% на пробное занятие.</p>
-
+          <p className="text-[16px] text-[#A56714]">При записи на сайте действует скидка 20% на пробное занятие.</p>
           <div className="my-10 border rounded-3xl border-[#A56714]">
-            <InputMask mask="+7(999)-999-99-99" className="p-3  rounded-3xl text-[#AE8349] outline-none placeholder:text-[#AE8349]" placeholder="Ваш номер телефона"></InputMask>
-            <button className="bg-[#FF9100] text-white p-3 border border-[#A56714] rounded-3xl">Отправить</button>
+            <form onSubmit={handleSubmit}>
+              <InputMask
+                mask="+7(999)-999-99-99"
+                className="p-3 rounded-3xl text-[#AE8349] outline-none placeholder:text-[#AE8349]"
+                placeholder="Ваш номер телефона"
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+              />
+              {showNameInput && (
+                <input
+                  type="text"
+                  className="p-3 rounded-3xl text-[#AE8349] outline-none placeholder:text-[#AE8349]"
+                  placeholder="Ваше имя"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              )}
+              <button className="bg-[#FF9100] text-white p-3 border border-[#A56714] rounded-3xl" type="submit">Отправить</button>
+            </form>
           </div>
         </article>
       </section>

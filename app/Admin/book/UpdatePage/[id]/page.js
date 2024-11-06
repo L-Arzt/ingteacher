@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-
 import Form from './Form';
 
 export default async function UpdateBook({ params }) {
@@ -12,5 +11,5 @@ export default async function UpdateBook({ params }) {
   });
   console.log(params.id);
 
-  return <Form data={data} params={params} />;
+  return <Form data={data} />;
 }
