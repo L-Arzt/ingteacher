@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
 
@@ -111,7 +112,7 @@ export default function Home() {
           <h1 className="text-[#374B5C] text-[33px] py-5">Гринь Ульяна</h1>
           <p className="text-[20px] py-5">Частный преподаватель по Английскому языку для детей и подростков.</p>
           <button className="flex border items-center justify-center border-[#FF9100] rounded-2xl bg-[#FF9100] py-2 px-8 ">
-            <h1 className="text-white">Узнать цены</h1>
+            <Link href='/#pricesBlock'><h1 className="text-white">Узнать цены</h1></Link>
           </button>
         </header>
 

@@ -43,9 +43,9 @@ export default function MenuWeek() {
             </div>
 
             {menuVisible && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center flex-col  gap-5 z-50" onClick={() => setMenuVisible(false)}>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center flex-col  gap-5 z-50 " onClick={() => setMenuVisible(false)}>
                     <button
-                        className="flex items-center justify-center bg-red-500 text-white p-2 rounded"
+                        className="flex items-center justify-center transition-all duration-200 bg-red-600 text-white p-2 rounded shadow-lg transform hover:scale-105"
                         onClick={() => setMenuVisible(false)}
                     >
                         Скрыть календарь
